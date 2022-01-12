@@ -19,7 +19,29 @@ RUN usermod -u ${UID} nginx
 
 # Копирование темплейта
 COPY default.conf.template /etc/nginx/templates/
+```
+Образ meistuss/otus_intro:latest
 
-# Копирвание контента в новый путь
-COPY homework.html /app/
+## Создание образа HipsterShop
+
+Сборка образа с нужным тегом
+```bash
+docker build ./ -t meistuss/otus-hipster-frontend:latest
+```
+ Отправка в репозиторий
+```bash
+docker push meistuss/otus-hipster-frontend:latest
+```
+## Hipster Shop
+
+POD frontend в состоянии Error, потому что не назначены обязательные переменные окружения, первая, на которую ругается - PRODUCT_CATALOG_SERVICE_ADDR
+```bash
+...
+panic: environment variable "PRODUCT_CATALOG_SERVICE_ADDR" not set
+
+goroutine 1 [running]:
+main.mustMapEnv(0xc000099b80, {0xc4e54a, 0x1c})
+        /src/main.go:259 +0xb9
+main.main()
+        /src/main.go:117 +0x5aa
 ```
