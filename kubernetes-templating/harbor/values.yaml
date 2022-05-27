@@ -1,0 +1,25 @@
+expose:
+  type: ingress
+  tls:
+    enabled: true
+    certSource: secret
+    secret:
+      secretName: harbor.34.134.136.14.nip.io
+  ingress:
+    hosts:
+      core: harbor.34.134.136.14.nip.io
+    className: nginx
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: "letsencrypt-production"
+      cert-manager.io/acme-challenge-type: http01
+      kubernetes.io/ingress.class: nginx
+notary:
+  enabled: false
+internalTLS:
+  # If internal TLS enabled
+  enabled: false

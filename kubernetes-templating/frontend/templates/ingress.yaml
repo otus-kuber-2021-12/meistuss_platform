@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    cert-manager.io/acme-challenge-type: http01
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: shop.34.134.136.14.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port: 
+              number: 80
+  tls:
+  - hosts:
+      - shop.34.134.136.14.nip.io
+    secretName: shop.34.134.136.14.nip.io
