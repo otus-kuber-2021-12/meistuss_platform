@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: meistuss/nginx-otus:latest
+        ports:
+        - containerPort: 8080
+      - name: nginx-exporter
+        image: nginx/nginx-prometheus-exporter
+        env:
+        - name: SCRAPE_URI
+          value: "http://127.0.0.1:8080/basic_status"
+        ports:
+        - containerPort: 9113
