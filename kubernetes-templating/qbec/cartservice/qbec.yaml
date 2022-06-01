@@ -1,0 +1,10 @@
+apiVersion: qbec.io/v1alpha1
+kind: App
+metadata:
+  name: cartservice
+spec:
+  environments:
+    default:
+      defaultNamespace: hipster-shop
+      server: https://34.122.219.38
+  vars: {}
