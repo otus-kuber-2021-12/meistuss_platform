@@ -1,0 +1,65 @@
+alertmanager:
+  
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+     - alertmanager.test.svc.app.local
+    paths:
+     - /
+  
+  alertmanagerSpec:
+    tolerations:
+    - key: node-role
+      operator: Equal
+      value: infra
+      effect: NoSchedule
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: otus-node-affinity
+              operator: In
+              values:
+              - infra-pool
+
+grafana:
+  
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.test.svc.app.local
+    path: /
+  
+  additionalDataSources:
+  - name: loki
+    access: proxy
+    type: loki
+    url: http://loki:3100
+
+prometheus:
+  
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - prometheus.test.svc.app.local
+    path: /
+  
+  prometheusSpec:
+    tolerations:
+    - key: node-role
+      operator: Equal
+      value: infra
+      effect: NoSchedule
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: otus-node-affinity
+              operator: In
+              values:
+              - infra-pool

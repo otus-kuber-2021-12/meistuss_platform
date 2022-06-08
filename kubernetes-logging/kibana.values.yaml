@@ -1,0 +1,11 @@
+image: "elastic/kibana"
+imageTag: "7.9.3"
+
+ingress:
+  enabled: true
+  annotations: {
+    networking.k8s.io/v1: nginx
+  }
+  path: /
+  hosts:
+  - kibana.test.svc.app.local

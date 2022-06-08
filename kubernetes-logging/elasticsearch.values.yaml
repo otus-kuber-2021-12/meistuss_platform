@@ -1,0 +1,22 @@
+tolerations:
+- key: node-role
+  operator: Equal
+  value: infra
+  effect: NoSchedule
+
+volumeClaimTemplate:
+  resources:
+    requests:
+      storage: 5Gi
+
+image: "elastic/elasticsearch"
+imageTag: "7.9.3"
+
+nodeAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: otus-node-affinity
+        operator: In
+        values:
+        - infra-pool
