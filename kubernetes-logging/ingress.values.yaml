@@ -1,0 +1,40 @@
+controller:
+  replicaCount: 3
+  config: 
+    log-format-escape-json: "true"
+    log-format-upstream: '{"remote_addr":"$remote_addr","request":"$request","content_type":"$content_type","upstream_status":"$upstream_status","status":"$status","upstream_addr":"$upstream_addr"}'
+  
+  tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - nginx-ingress
+          topologyKey: kubernetes.io/hostname
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: otus-node-affinity
+            operator: In
+            values:
+            - infra-pool
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: observability
+      additionalLabels:
+        release: prometheus
